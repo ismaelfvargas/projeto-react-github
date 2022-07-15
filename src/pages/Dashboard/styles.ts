@@ -28,7 +28,7 @@ export const Form = styled.form<FormProps>`
     border-radius: 5px 0 0 5px;
     color: #3a3a3a;
     background-color: #f8f6f6;
-    border: 2px solid #fff;
+    border: 2px solid #f8f6f6;
     border-right: 0;
     
     ${(props) => props.hasError && css`
