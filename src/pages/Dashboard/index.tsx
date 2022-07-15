@@ -1,4 +1,4 @@
-import React, { useState, FormEvent } from 'react';
+import React, { useState, useEffect, FormEvent } from 'react';
 import { FiChevronRight } from 'react-icons/fi';
 import api from "../../services/api";
 
@@ -8,7 +8,7 @@ import { Title, Form, Repositories, Error } from "./styles";
 
 interface Repository {
     full_name: string;
-    descripton: string;
+    description: string;
     owner: {
         login: string;
         avatar_url: string;
@@ -20,7 +20,22 @@ const Dashboard: React.FC = () => {
     const [newRepo, setNewRepo] = useState('');
     const [inputError, setInputError] = useState('');
     // estado que vai armazenar e mostrar os repositorios que vem do service
-    const [repositories, setRepositories] = useState<Repository[]>([]);
+    const [repositories, setRepositories] = useState<Repository[]>(() => {
+        const storagedRepositories = localStorage.getItem(
+          '@GithubExplorer:repositories',
+        );
+        // utilizado o JSON.parse para transformar o repositories em array de novo
+        if (storagedRepositories) {
+            return JSON.parse(storagedRepositories);
+        }
+
+        return [];
+    });
+    // useEffect utilizado para salvar os "repositories" dentro do local storage.
+    // JSON.stringify é utilizado para transformar um array em json string, pois useEffect não pode ser utilizado com array
+    useEffect(() => {
+        localStorage.setItem('@GithubExplorer:repositories', JSON.stringify(repositories));
+    }, [repositories])
 
     async function handleAddRepository(event: FormEvent<HTMLFormElement>): Promise<void>{
         event.preventDefault();
@@ -69,7 +84,7 @@ const Dashboard: React.FC = () => {
                         />
                         <div>
                             <strong>{repository.full_name}</strong>
-                            <p>{repository.descripton}</p>
+                            <p>{repository.description}</p>
                         </div>
 
                         <FiChevronRight size={20} />
