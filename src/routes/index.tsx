@@ -7,7 +7,7 @@ import Repository from "../pages/Repository";
 const Rotas: React.FC = () => (
     <Routes>
         <Route path="/" element={<Dashboard/>} />
-        <Route path="/repository" element={<Repository/>} />
+        <Route path="/repositories" element={<Repository/>} />
     </Routes>
 )
 
